@@ -1,0 +1,8 @@
+#############################################################
+# Language file for the Omniscience mod by Eric Hildebrand. #
+# Language: en_US (American English)                        #
+#############################################################
+
+config.panel.title=%s Settings
+config.spy.entity.text=Show invisible entities as translucent.
+config.spy.player.text=Show invisible players as translucent.
