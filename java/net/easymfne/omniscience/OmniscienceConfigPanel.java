@@ -19,7 +19,10 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 
+import org.lwjgl.input.Keyboard;
+
 import com.mumfrey.liteloader.client.gui.GuiCheckbox;
+import com.mumfrey.liteloader.core.LiteLoader;
 import com.mumfrey.liteloader.modconfig.ConfigPanel;
 import com.mumfrey.liteloader.modconfig.ConfigPanelHost;
 
@@ -31,7 +34,13 @@ public class OmniscienceConfigPanel extends Gui implements ConfigPanel {
 
   /** Line spacing, in points. */
   private final static int SPACING = 16;
+  
+  /** Cursor offset amount for permission warning. */
+  private final static int CURSOR_OFFSET_X = 6;
+  private final static int CURSOR_OFFSET_Y = 10;
 
+  /** Instance references. */
+  private Minecraft minecraft;
   private GuiCheckbox spyEntitiesBox;
   private GuiCheckbox spyPlayersBox;
   private GuiButton activeButton;
@@ -39,8 +48,14 @@ public class OmniscienceConfigPanel extends Gui implements ConfigPanel {
   /** Draw the configuration panel's elements every refresh. */
   @Override
   public void drawPanel(ConfigPanelHost host, int mouseX, int mouseY, float partialTicks) {
-    spyEntitiesBox.drawButton(Minecraft.getMinecraft(), mouseX, mouseY);
-    spyPlayersBox.drawButton(Minecraft.getMinecraft(), mouseX, mouseY);
+    spyEntitiesBox.drawButton(minecraft, mouseX, mouseY);
+    spyPlayersBox.drawButton(minecraft, mouseX, mouseY);
+    if (spyEntitiesBox.isMouseOver() && !spyEntitiesBox.enabled || spyPlayersBox.isMouseOver()
+        && !spyPlayersBox.enabled) {
+      minecraft.fontRendererObj.drawStringWithShadow(
+          I18n.format("omniscience.configpanel.nopermission.text"), mouseX + CURSOR_OFFSET_X,
+          mouseY + CURSOR_OFFSET_Y, 0xff0000);
+    }
   }
 
   /** Get the height of the panel in points. */
@@ -52,12 +67,16 @@ public class OmniscienceConfigPanel extends Gui implements ConfigPanel {
   /** Get the title to display for the panel. */
   @Override
   public String getPanelTitle() {
-    return I18n.format("config.panel.title", new Object[] {LiteModOmniscience.MOD_NAME});
+    return I18n.format("omniscience.configpanel.title", new Object[] {LiteModOmniscience.MOD_NAME});
   }
 
   /** On key-presses, nothing needs to be done. */
   @Override
-  public void keyPressed(ConfigPanelHost host, char keyChar, int keyCode) {}
+  public void keyPressed(ConfigPanelHost host, char keyChar, int keyCode) {
+    if (keyCode == Keyboard.KEY_ESCAPE || keyCode == Keyboard.KEY_RETURN) {
+      host.close();
+    }
+  }
 
   /** On mouse movement, nothing needs to be done. */
   @Override
@@ -66,14 +85,16 @@ public class OmniscienceConfigPanel extends Gui implements ConfigPanel {
   /** On click, activate button under cursor if one exists. */
   @Override
   public void mousePressed(ConfigPanelHost host, int mouseX, int mouseY, int mouseButton) {
-    if (spyEntitiesBox.mousePressed(Minecraft.getMinecraft(), mouseX, mouseY)) {
+    if (spyEntitiesBox.mousePressed(minecraft, mouseX, mouseY)) {
       activeButton = spyEntitiesBox;
       LiteModOmniscience.instance.spyEntities = !LiteModOmniscience.instance.spyEntities;
       spyEntitiesBox.checked = LiteModOmniscience.instance.spyEntities;
-    } else if (spyPlayersBox.mousePressed(Minecraft.getMinecraft(), mouseX, mouseY)) {
+      spyEntitiesBox.playPressSound(minecraft.getSoundHandler());
+    } else if (spyPlayersBox.mousePressed(minecraft, mouseX, mouseY)) {
       activeButton = spyPlayersBox;
       LiteModOmniscience.instance.spyPlayers = !LiteModOmniscience.instance.spyPlayers;
       spyPlayersBox.checked = LiteModOmniscience.instance.spyPlayers;
+      spyPlayersBox.playPressSound(minecraft.getSoundHandler());
     }
   }
 
@@ -86,9 +107,11 @@ public class OmniscienceConfigPanel extends Gui implements ConfigPanel {
     }
   }
 
-  /** On closing of panel, nothing needs to be done. */
+  /** On closing of panel, save the configuration to disk. */
   @Override
-  public void onPanelHidden() {}
+  public void onPanelHidden() {
+    LiteLoader.getInstance().writeConfig(LiteModOmniscience.instance);
+  }
 
   /** On resizing of panel, nothing needs to be done. */
   @Override
@@ -97,20 +120,34 @@ public class OmniscienceConfigPanel extends Gui implements ConfigPanel {
   /** On opening of panel, instantiate the user interface components. */
   @Override
   public void onPanelShown(ConfigPanelHost host) {
+    minecraft = Minecraft.getMinecraft();
     int id = 0;
     int line = 0;
     spyEntitiesBox =
-        new GuiCheckbox(id++, 10, SPACING * line++, I18n.format("config.spy.entity.text",
-            new Object[0]));
+        new GuiCheckbox(id++, 10, SPACING * line++, I18n.format(
+            "omniscience.configpanel.spyentity.text", new Object[0]));
     spyEntitiesBox.checked = LiteModOmniscience.instance.spyEntities;
     spyPlayersBox =
-        new GuiCheckbox(id++, 10, SPACING * line++, I18n.format("config.spy.player.text",
-            new Object[0]));
+        new GuiCheckbox(id++, 10, SPACING * line++, I18n.format(
+            "omniscience.configpanel.spyplayer.text", new Object[0]));
     spyPlayersBox.checked = LiteModOmniscience.instance.spyPlayers;
+    updateForPermissions();
   }
 
   /** On each tick, nothing needs to be done. */
   @Override
   public void onTick(ConfigPanelHost host) {}
+
+  /** Enable/disable the configuration checkboxes based on user permissions. */
+  private void updateForPermissions() {
+    if (spyEntitiesBox != null) {
+      spyEntitiesBox.enabled = OmnisciencePermissions.canSpyEntity();
+      spyEntitiesBox.checked &= spyEntitiesBox.enabled;
+    }
+    if (spyPlayersBox != null) {
+      spyPlayersBox.enabled = OmnisciencePermissions.canSpyPlayer();
+      spyPlayersBox.checked &= spyPlayersBox.enabled;
+    }
+  }
 
 }

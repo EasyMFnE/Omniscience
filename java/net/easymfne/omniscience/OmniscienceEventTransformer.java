@@ -14,13 +14,10 @@
  */
 package net.easymfne.omniscience;
 
-import net.minecraft.entity.player.EntityPlayer;
-
 import com.mumfrey.liteloader.transformers.event.Event;
 import com.mumfrey.liteloader.transformers.event.EventInjectionTransformer;
 import com.mumfrey.liteloader.transformers.event.MethodInfo;
 import com.mumfrey.liteloader.transformers.event.inject.MethodHead;
-import com.mumfrey.liteloader.util.log.LiteLoaderLogger;
 
 /**
  * Event injection to allow modification of the return value of the isInvisibleToPlayer method in
@@ -31,10 +28,10 @@ public class OmniscienceEventTransformer extends EventInjectionTransformer {
   /** Add Event for modifying entity visibility. */
   private void addEntityVisibilityCheckEvent() {
     addEvent(
-        Event.getOrCreate("Omniscience_Entity_isInvisibleToPlayer", true, 9),
+        Event.getOrCreate("Omniscience_Entity_isInvisibleToPlayer", true),
         new MethodInfo(OmniscienceObf.ENTITY, OmniscienceObf.IS_INVISIBLE_TO_PLAYER, Boolean.TYPE,
             OmniscienceObf.ENTITY_PLAYER), new MethodHead()).addListener(
-        new MethodInfo("net.easymfne.omniscience.LiteModOmniscience", "adjustEntityVisibility"));
+        new MethodInfo("net.easymfne.omniscience.LiteModOmniscience", "adjustVisibility"));
   }
 
   @Override
@@ -46,10 +43,10 @@ public class OmniscienceEventTransformer extends EventInjectionTransformer {
   /** Add Event for modifying player visibility. */
   private void addPlayerVisibilityCheckEvent() {
     addEvent(
-        Event.getOrCreate("Omniscience_EntityPlayer_isInvisibleToPlayer", true, 9),
+        Event.getOrCreate("Omniscience_EntityPlayer_isInvisibleToPlayer", true),
         new MethodInfo(OmniscienceObf.ENTITY_PLAYER, OmniscienceObf.IS_INVISIBLE_TO_PLAYER,
             Boolean.TYPE, OmniscienceObf.ENTITY_PLAYER), new MethodHead()).addListener(
-        new MethodInfo("net.easymfne.omniscience.LiteModOmniscience", "adjustPlayerVisibility"));
+        new MethodInfo("net.easymfne.omniscience.LiteModOmniscience", "adjustVisibility"));
   }
 
 }

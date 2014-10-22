@@ -23,28 +23,29 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.mumfrey.liteloader.Configurable;
 import com.mumfrey.liteloader.LiteMod;
+import com.mumfrey.liteloader.Permissible;
 import com.mumfrey.liteloader.modconfig.ConfigPanel;
 import com.mumfrey.liteloader.modconfig.ConfigStrategy;
 import com.mumfrey.liteloader.modconfig.ExposableOptions;
+import com.mumfrey.liteloader.permissions.PermissionsManager;
+import com.mumfrey.liteloader.permissions.PermissionsManagerClient;
 import com.mumfrey.liteloader.transformers.event.ReturnEventInfo;
 import com.mumfrey.liteloader.util.log.LiteLoaderLogger;
 
 @ExposableOptions(strategy = ConfigStrategy.Unversioned, filename = "omniscience.config.json")
-public class LiteModOmniscience implements LiteMod, Configurable {
+public class LiteModOmniscience implements LiteMod, Configurable, Permissible {
 
-  /** Handle entity visibility checks, modifying return values if necessary. */
-  public static void adjustEntityVisibility(ReturnEventInfo<Entity, Boolean> event,
-      EntityPlayer player) {
-    if (instance.spyEntities) {
-      event.setReturnValue(Boolean.FALSE);
-    }
-  }
-
-  /** Handle player visibility checks, modifying return values if necessary. */
-  public static void adjustPlayerVisibility(ReturnEventInfo<Entity, Boolean> event,
-      EntityPlayer player) {
-    if (instance.spyPlayers) {
-      event.setReturnValue(Boolean.FALSE);
+  /** Handle entity and player visibility checks, modifying return values if necessary. */
+  public static void adjustVisibility(ReturnEventInfo<Entity, Boolean> event, EntityPlayer player) {
+    if (!(event.getSource() instanceof EntityPlayer)) {
+      if (instance.spyEntities
+          && OmnisciencePermissions.canSpyEntity()) {
+        event.setReturnValue(Boolean.FALSE);
+      }
+    } else {
+      if (instance.spyPlayers && OmnisciencePermissions.canSpyPlayer()) {
+        event.setReturnValue(Boolean.FALSE);
+      }
     }
   }
 
@@ -53,7 +54,8 @@ public class LiteModOmniscience implements LiteMod, Configurable {
 
   /** Name/Version information. */
   public static final String MOD_NAME = "Omniscience";
-  public static final String MOD_VERSION = "1.0.0";
+  public static final String MOD_VERSION = "1.0.1";
+  public static final float MOD_VERSION_NUMBER = 1.0001f;
 
   /** Spy invisible Entities. */
   @Expose
@@ -69,6 +71,7 @@ public class LiteModOmniscience implements LiteMod, Configurable {
   public LiteModOmniscience() {
     if (instance != null) {
       LiteLoaderLogger.severe("Attempted to instantiate " + MOD_NAME + " twice.");
+      throw new RuntimeException("Double instantiation of " + MOD_NAME);
     } else {
       instance = this;
     }
@@ -86,6 +89,18 @@ public class LiteModOmniscience implements LiteMod, Configurable {
     return MOD_NAME;
   }
 
+  /** Get the lowercase name of the mod for permission usage. */
+  @Override
+  public String getPermissibleModName() {
+    return MOD_NAME.toLowerCase();
+  }
+
+  /** Get the numeric version of the mod for permission usage. */
+  @Override
+  public float getPermissibleModVersion() {
+    return MOD_VERSION_NUMBER;
+  }
+
   /** Get the human-readable modification version. */
   @Override
   public String getVersion() {
@@ -95,6 +110,24 @@ public class LiteModOmniscience implements LiteMod, Configurable {
   /** On initialization, nothing needs to be done. */
   @Override
   public void init(File configPath) {}
+
+  /** On permissions changing, refresh their cached values. */
+  @Override
+  public void onPermissionsChanged(PermissionsManager manager) {
+    OmnisciencePermissions.refresh();
+  }
+
+  /** On clearing of permissions, clear their cached values. */
+  @Override
+  public void onPermissionsCleared(PermissionsManager manager) {
+    OmnisciencePermissions.clear();
+  }
+
+  /** Register the modification's permission nodes. */
+  @Override
+  public void registerPermissions(PermissionsManagerClient permissionsManager) {
+    OmnisciencePermissions.init(this, permissionsManager);
+  }
 
   /** On upgrading from a previous version, nothing needs to be done. */
   @Override

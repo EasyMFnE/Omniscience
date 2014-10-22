@@ -3,6 +3,7 @@
 # Language: en_US (American English)                        #
 #############################################################
 
-config.panel.title=%s Settings
-config.spy.entity.text=Show invisible entities as translucent.
-config.spy.player.text=Show invisible players as translucent.
+omniscience.configpanel.title=%s Settings
+omniscience.configpanel.spyentity.text=Show invisible entities as translucent.
+omniscience.configpanel.spyplayer.text=Show invisible players as translucent.
+omniscience.configpanel.nopermission.text=You do not have the necessary permission(s).

@@ -1,2 +1,6 @@
+[2014-10-21] v1.0.1
+    - Permissions inclusion fix.
+    - Configuration is now actually saved.
+
 [2014-10-16] v1.0.0
     - Initial release with all originally-planned functionality.
