@@ -1,3 +1,6 @@
+[2015-04-04] v1.0.2
+    - Updated for 1.8
+
 [2014-10-21] v1.0.1
     - Permissions inclusion fix.
     - Configuration is now actually saved.

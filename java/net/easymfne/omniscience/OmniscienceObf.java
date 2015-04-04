@@ -20,14 +20,14 @@ import com.mumfrey.liteloader.core.runtime.Obf;
 public class OmniscienceObf extends Obf {
 
   /** Obfuscation reference for Entity class. */
-  public static OmniscienceObf ENTITY = new OmniscienceObf("net.minecraft.entity.Entity", "sa");
+  public static OmniscienceObf ENTITY = new OmniscienceObf("net.minecraft.entity.Entity", "wv");
 
   /** Obfuscation reference for EntityPlayer class. */
   public static OmniscienceObf ENTITY_PLAYER = new OmniscienceObf(
-      "net.minecraft.entity.player.EntityPlayer", "yz");
+      "net.minecraft.entity.player.EntityPlayer", "ahd");
 
   /** Obfuscation reference for isInvisibleToPlayer(EntityPlayer) method. */
-  public static OmniscienceObf IS_INVISIBLE_TO_PLAYER = new OmniscienceObf("func_98034_c", "d",
+  public static OmniscienceObf IS_INVISIBLE_TO_PLAYER = new OmniscienceObf("func_98034_c", "f",
       "isInvisibleToPlayer");
 
   /**

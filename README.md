@@ -4,7 +4,7 @@
 [Bug Report](https://github.com/EasyMFnE/Omniscience/issues) |
 [Donate](https://www.paypal.com/cgi-bin/webscr?hosted_button_id=457RX2KYUDY5G&item_name=Omniscience&cmd=_s-xclick)</center>
 
-<center>**Latest Version:** v1.0.1 for mc1.7.10</center>
+<center>**Latest Version:** v1.0.2 for mc1.8</center>
 
 ## About ##
 
@@ -20,7 +20,7 @@ This project contains the following functionality:
 ## Installation ##
 
 1.  Install proper version of LiteLoader.
-2.  Download and move this mode to the proper versioned mods folder. (e.g. `.minecraft/mods/1.7.10/`)
+2.  Download and move this mode to the proper versioned mods folder. (e.g. `.minecraft/mods/1.8/`)
 
 ## Configuration ##
 
