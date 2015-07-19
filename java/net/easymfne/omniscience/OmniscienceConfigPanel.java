@@ -34,7 +34,7 @@ public class OmniscienceConfigPanel extends Gui implements ConfigPanel {
 
   /** Line spacing, in points. */
   private final static int SPACING = 16;
-  
+
   /** Cursor offset amount for permission warning. */
   private final static int CURSOR_OFFSET_X = 6;
   private final static int CURSOR_OFFSET_Y = 10;

@@ -34,14 +34,24 @@ public class OmnisciencePermissions {
   public static final String PLAYER_STAR = "player.*";
   /** Permission for viewing invisible players as partially transparent. */
   public static final String PLAYER_TRANSLUCENT = "player.translucent";
+  /** Permission for viewing entity-outline-highlighting in any gamemode. */
+  public static final String RENDER_HIGHLIGHT = "render.highlight";
 
   private static PermissionsManagerClient permissionsManager;
   private static Permissible mod;
   private static boolean initDone;
 
   /** Permission-value cache booleans. */
+  private static boolean canRenderHighlight = true;
   private static boolean canSpyEntity = true;
   private static boolean canSpyPlayer = true;
+
+  /**
+   * @return Whether the user can access the entity-highlight mode.
+   */
+  public static boolean canRenderHighlight() {
+    return canRenderHighlight;
+  }
 
   /**
    * @return Whether the user can spy invisible entities.
@@ -61,6 +71,7 @@ public class OmnisciencePermissions {
    * Clear permissions, re-granting full modification access.
    */
   public static void clear() {
+    canRenderHighlight = true;
     canSpyEntity = true;
     canSpyPlayer = true;
   }
@@ -100,6 +111,7 @@ public class OmnisciencePermissions {
     registerPermission(ENTITY_TRANSLUCENT);
     registerPermission(PLAYER_STAR);
     registerPermission(PLAYER_TRANSLUCENT);
+    registerPermission(RENDER_HIGHLIGHT);
     queryPermissions();
   }
 
@@ -119,6 +131,7 @@ public class OmnisciencePermissions {
    * Refresh the cached permission values.
    */
   public static void refresh() {
+    canRenderHighlight = hasPermission(STAR) || hasPermission(RENDER_HIGHLIGHT);
     canSpyEntity =
         hasPermission(STAR) || hasPermission(ENTITY_STAR) || hasPermission(ENTITY_TRANSLUCENT);
     canSpyPlayer =

@@ -38,6 +38,16 @@ public class OmniscienceEventTransformer extends EventInjectionTransformer {
   protected void addEvents() {
     addEntityVisibilityCheckEvent();
     addPlayerVisibilityCheckEvent();
+    addHighlightHotkeyTweakEvent();
+  }
+  
+  /** Add Event for allowing usage of entity-highlight keybind in any gamemode. */
+  private void addHighlightHotkeyTweakEvent() {
+    addEvent(
+        Event.getOrCreate("Omniscience_RenderGlobal_isRenderEntityOutlines", true),
+        new MethodInfo(OmniscienceObf.RENDER_GLOBAL, OmniscienceObf.IS_RENDER_ENTITY_OUTLINES, Boolean.TYPE),
+        new MethodHead()).addListener(
+            new MethodInfo("net.easymfne.omniscience.LiteModOmniscience", "adjustHighlight"));
   }
 
   /** Add Event for modifying player visibility. */

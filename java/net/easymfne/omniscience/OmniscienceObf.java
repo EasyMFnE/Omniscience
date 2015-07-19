@@ -15,6 +15,7 @@
 package net.easymfne.omniscience;
 
 import com.mumfrey.liteloader.core.runtime.Obf;
+import com.mumfrey.liteloader.util.ObfuscationUtilities;
 
 /** Obfuscation reference helper. */
 public class OmniscienceObf extends Obf {
@@ -26,9 +27,17 @@ public class OmniscienceObf extends Obf {
   public static OmniscienceObf ENTITY_PLAYER = new OmniscienceObf(
       "net.minecraft.entity.player.EntityPlayer", "ahd");
 
-  /** Obfuscation reference for isInvisibleToPlayer(EntityPlayer) method. */
+  /** Obfuscation reference for isInvisibleToPlayer(EntityPlayer) method in Entity/EntityPlayer. */
   public static OmniscienceObf IS_INVISIBLE_TO_PLAYER = new OmniscienceObf("func_98034_c", "f",
       "isInvisibleToPlayer");
+
+  /** Obfuscation reference for isRenderEntityOutlines() method in RenderGlobal. */
+  public static OmniscienceObf IS_RENDER_ENTITY_OUTLINES = new OmniscienceObf("func_174985_d", "d",
+      "isRenderEntityOutlines");
+
+  /** Obfuscation reference for RenderGlobal class. */
+  public static OmniscienceObf RENDER_GLOBAL = new OmniscienceObf(
+      "net.minecraft.client.renderer.RenderGlobal", "ckn");
 
   /**
    * @param seargeName Searge's name for it

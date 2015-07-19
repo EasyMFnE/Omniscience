@@ -16,6 +16,10 @@ package net.easymfne.omniscience;
 
 import java.io.File;
 
+import org.lwjgl.input.Keyboard;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -24,6 +28,8 @@ import com.google.gson.annotations.SerializedName;
 import com.mumfrey.liteloader.Configurable;
 import com.mumfrey.liteloader.LiteMod;
 import com.mumfrey.liteloader.Permissible;
+import com.mumfrey.liteloader.Tickable;
+import com.mumfrey.liteloader.core.LiteLoader;
 import com.mumfrey.liteloader.modconfig.ConfigPanel;
 import com.mumfrey.liteloader.modconfig.ConfigStrategy;
 import com.mumfrey.liteloader.modconfig.ExposableOptions;
@@ -35,11 +41,17 @@ import com.mumfrey.liteloader.util.log.LiteLoaderLogger;
 @ExposableOptions(strategy = ConfigStrategy.Unversioned, filename = "omniscience.config.json")
 public class LiteModOmniscience implements LiteMod, Configurable, Permissible {
 
+  /** Handle enabled-check for entity highlighting key-bind. */
+  public static void adjustHighlight(ReturnEventInfo<RenderGlobal, Boolean> event) {
+    if (OmnisciencePermissions.canRenderHighlight()) {
+      event.setReturnValue(Minecraft.getMinecraft().gameSettings.keyBindSpectatorOutlines.isKeyDown());
+    }
+  }
+  
   /** Handle entity and player visibility checks, modifying return values if necessary. */
   public static void adjustVisibility(ReturnEventInfo<Entity, Boolean> event, EntityPlayer player) {
     if (!(event.getSource() instanceof EntityPlayer)) {
-      if (instance.spyEntities
-          && OmnisciencePermissions.canSpyEntity()) {
+      if (instance.spyEntities && OmnisciencePermissions.canSpyEntity()) {
         event.setReturnValue(Boolean.FALSE);
       }
     } else {
@@ -54,8 +66,8 @@ public class LiteModOmniscience implements LiteMod, Configurable, Permissible {
 
   /** Name/Version information. */
   public static final String MOD_NAME = "Omniscience";
-  public static final String MOD_VERSION = "1.0.1";
-  public static final float MOD_VERSION_NUMBER = 1.0001f;
+  public static final String MOD_VERSION = "1.1.0";
+  public static final float MOD_VERSION_NUMBER = 01.0100f;
 
   /** Spy invisible Entities. */
   @Expose
