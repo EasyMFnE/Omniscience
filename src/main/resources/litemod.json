@@ -1,0 +1,7 @@
+{
+    "name": "Omniscience",
+    "mcversion": "1.8",
+    "revision": "DEBUG",
+    "author": "EasyMFnE",
+    "classTransformerClasses": "net.easymfne.omniscience.OmniscienceEventTransformer"
+}

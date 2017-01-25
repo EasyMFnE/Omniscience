@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.liteloader'
+
+version = "1.1.0"
+group = "net.easymfne" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "omniscience"
+
+minecraft {
+    version = "1.8.9"
+    mappings = "stable_22"
+    runDir = "run"
+}
+
+litemod {
+    json {
+        name = "Omniscience"
+        author = "EasyMFnE"
+        mcversion = "1.8.9"
+        classTransformerClasses += "net.easymfne.omniscience.OmniscienceEventTransformer"
+    }
+}
+
+jar {
+    from litemod.outputs
+}
