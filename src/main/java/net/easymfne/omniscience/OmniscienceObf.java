@@ -36,7 +36,7 @@ public class OmniscienceObf extends Obf {
 
   /** Obfuscation reference for RenderGlobal class. */
   public static OmniscienceObf RENDER_GLOBAL = new OmniscienceObf(
-      "net.minecraft.client.renderer.RenderGlobal", "bno");
+      "net.minecraft.client.renderer.RenderGlobal", "bnl");
 
   /**
    * @param seargeName Searge's name for it

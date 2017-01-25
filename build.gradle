@@ -23,8 +23,8 @@ group = "net.easymfne" // http://maven.apache.org/guides/mini/guide-naming-conve
 archivesBaseName = "omniscience"
 
 minecraft {
-    version = "1.9"
-    mappings = "stable_24"
+    version = "1.9.4"
+    mappings = "stable_26"
     runDir = "run"
 }
 
@@ -32,7 +32,7 @@ litemod {
     json {
         name = "Omniscience"
         author = "EasyMFnE"
-        mcversion = "1.9"
+        mcversion = "1.9.4"
         classTransformerClasses += "net.easymfne.omniscience.OmniscienceEventTransformer"
     }
 }
