@@ -52,7 +52,7 @@ public class OmniscienceConfigPanel extends Gui implements ConfigPanel {
     spyPlayersBox.drawButton(minecraft, mouseX, mouseY);
     if (spyEntitiesBox.isMouseOver() && !spyEntitiesBox.enabled || spyPlayersBox.isMouseOver()
         && !spyPlayersBox.enabled) {
-      minecraft.fontRendererObj.drawStringWithShadow(
+      minecraft.fontRenderer.drawStringWithShadow(
           I18n.format("omniscience.configpanel.nopermission.text"), mouseX + CURSOR_OFFSET_X,
           mouseY + CURSOR_OFFSET_Y, 0xff0000);
     }
