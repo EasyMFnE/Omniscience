@@ -48,8 +48,8 @@ public class OmniscienceConfigPanel extends Gui implements ConfigPanel {
   /** Draw the configuration panel's elements every refresh. */
   @Override
   public void drawPanel(ConfigPanelHost host, int mouseX, int mouseY, float partialTicks) {
-    spyEntitiesBox.drawButton(minecraft, mouseX, mouseY);
-    spyPlayersBox.drawButton(minecraft, mouseX, mouseY);
+    spyEntitiesBox.drawButton(minecraft, mouseX, mouseY, partialTicks);
+    spyPlayersBox.drawButton(minecraft, mouseX, mouseY, partialTicks);
     if (spyEntitiesBox.isMouseOver() && !spyEntitiesBox.enabled || spyPlayersBox.isMouseOver()
         && !spyPlayersBox.enabled) {
       minecraft.fontRenderer.drawStringWithShadow(
