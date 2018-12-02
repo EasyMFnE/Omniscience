@@ -16,8 +16,6 @@ package net.easymfne.omniscience;
 
 import java.io.File;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
@@ -28,8 +26,6 @@ import com.google.gson.annotations.SerializedName;
 import com.mumfrey.liteloader.Configurable;
 import com.mumfrey.liteloader.LiteMod;
 import com.mumfrey.liteloader.Permissible;
-import com.mumfrey.liteloader.Tickable;
-import com.mumfrey.liteloader.core.LiteLoader;
 import com.mumfrey.liteloader.modconfig.ConfigPanel;
 import com.mumfrey.liteloader.modconfig.ConfigStrategy;
 import com.mumfrey.liteloader.modconfig.ExposableOptions;
